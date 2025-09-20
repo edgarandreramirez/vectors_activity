@@ -62,11 +62,13 @@ with tab2:
 
     ax.quiver(0, 0, a[0], a[1], angles='xy', scale_units='xy', scale=1, color='r', label='Given vector')
 
-    ax.set_xlim(-max(abs(a[0]), 5), max(a[0], 5))
-    ax.set_ylim(-max(abs(a[1]), 5), max(a[1], 5))
+    ax.set_xlim(min(a[0], -5), max(a[0], 5))
+    ax.set_ylim(min(a[1], -5), max(a[1], 5))
+    ax.set_xticks(np.arange(ax.get_xlim()[0], ax.get_xlim()[1]+1, 1))
+    ax.set_yticks(np.arange(ax.get_ylim()[0], ax.get_ylim()[1]+1, 1))
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
-    ax.legend(loc='best')
+    ax.legend(loc='best',borderpad=0.3)
 
     ax.grid(True)
     ax.set_title('Vector Components')
@@ -84,11 +86,13 @@ with tab2:
         fig2, ax2 = plt.subplots(figsize=sizeofplots)
         ax2.quiver(0, 0, a[0], a[1], angles='xy', scale_units='xy', scale=1, color='r', label='Given Vector')
         ax2.quiver(0, 0, user_answer[0], user_answer[1], angles='xy', scale_units='xy', scale=1, color='m', label='User Answer')
-        ax2.set_xlim(-max(abs(a[0]), abs(user_answer[0]), 5), max(a[0], user_answer[0], 5))
-        ax2.set_ylim(-max(abs(a[1]), abs(user_answer[1]), 5), max(a[1], user_answer[1], 5))
+        ax2.set_xlim(min(abs(a[0]), abs(user_answer[0]), -5), max(a[0], user_answer[0], 5))
+        ax2.set_ylim(min(abs(a[1]), abs(user_answer[1]), -5), max(a[1], user_answer[1], 5))
+        ax2.set_xticks(np.arange(ax2.get_xlim()[0], ax2.get_xlim()[1]+1, 1))
+        ax2.set_yticks(np.arange(ax2.get_ylim()[0], ax2.get_ylim()[1]+1, 1))
         ax2.set_xlabel('X')
         ax2.set_ylabel('Y')
-        ax2.legend(loc='best')
+        ax2.legend(loc='best',borderpad=0.3)
         ax2.grid(True)
         ax2.set_title('Vector Components')
         st.pyplot(fig2,width=500)
@@ -117,7 +121,6 @@ with tab2:
 
 with tab3:
     st.header("Magnitude and angle")
-    
 
     # Components of a vector from magnitude and angle (Streamlit version)
     st.subheader('Components of a vector given magnitude and angle', divider="rainbow")
@@ -128,7 +131,7 @@ with tab3:
 
     if 'magnitude' not in st.session_state or 'angle_deg' not in st.session_state:
         st.session_state.magnitude = np.random.randint(1, 11)
-        st.session_state.angle_deg = np.random.randint(0, 361)
+        st.session_state.angle_deg = np.random.randint(0, 360)
 
     magnitude = st.session_state.magnitude
     angle_deg = st.session_state.angle_deg
@@ -142,8 +145,8 @@ with tab3:
     # Plot the vector
     fig, ax = plt.subplots(figsize=sizeofplots)
     ax.quiver(0, 0, x, y, angles='xy', scale_units='xy', scale=1, color='r', label='Given Vector')
-    ax.set_xlim(-max(abs(x),5), max(abs(x),5))
-    ax.set_ylim(-max(abs(y),5), max(abs(y),5))
+    ax.set_xlim(min(x-1,-5), max(abs(x+1),5))
+    ax.set_ylim(min(y-1,-5), max(abs(y+1),5))
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     # Create the Arc patch
@@ -153,8 +156,8 @@ with tab3:
 
     #print mag and theta on plot
     ax.text(1+0.2, 0, f'{angle_deg}'+u"\u00b0", color='blue', fontsize=10) #ha='center', va='center', alpha=0.7
-    ax.text(x+0.5, y+0.5, f'{magnitude}', color='r', fontsize=10) #ha='center', va='center', alpha=0.7
-    ax.legend(loc='best')
+    ax.text(x+0.3, y+0.3,f'{magnitude}', color='r', fontsize=10,ha='center', va='center') #alpha=0.7
+    ax.legend(loc='best',borderpad=0.3)
     ax.grid(True)
     ax.set_title('Magnitude and angle of a vector')
     st.pyplot(fig,width=500)
@@ -173,11 +176,11 @@ with tab3:
         fig3, ax3 = plt.subplots(figsize=sizeofplots)
         ax3.quiver(0, 0, x, y, angles='xy', scale_units='xy', scale=1, color='r', label='Correct Vector')
         ax3.quiver(0, 0, user_answer2[0], user_answer2[1], angles='xy', scale_units='xy', scale=1, color='m', label='User Answer')
-        ax3.set_xlim(-max(abs(x),abs(user_answer2[0]),5),max(abs(x),abs(user_answer2[0]),5))
-        ax3.set_ylim(-max(abs(y),abs(user_answer2[1]),5),max(abs(y),abs(user_answer2[1]),5))
+        ax3.set_xlim(min(x,user_answer2[0],-5),max(abs(x),abs(user_answer2[0]),5))
+        ax3.set_ylim(min(y,user_answer2[1],-5),max(abs(y),abs(user_answer2[1]),5))
         ax3.set_xlabel('X')
         ax3.set_ylabel('Y')
-        ax3.legend(loc='best')
+        ax3.legend(loc='best',borderpad=0.3)
         ax3.grid(True)
         ax3.set_title('Magnitude and angle of a vector')
         st.pyplot(fig3,width=500)
@@ -219,8 +222,8 @@ with tab4:
 
 
     if 'vec_a' not in st.session_state or 'vec_b' not in st.session_state:
-        st.session_state.vec_a = np.random.randint(0, 5, size=2)
-        st.session_state.vec_b = np.random.randint(0, 5, size=2)
+        st.session_state.vec_a = np.random.randint(-5, 5, size=2)
+        st.session_state.vec_b = np.random.randint(-5, 5, size=2)
 
     a = st.session_state.vec_a
     b = st.session_state.vec_b
@@ -235,16 +238,16 @@ with tab4:
     #ax.quiver(*origin, sum_vec[0], sum_vec[1], angles='xy', scale_units='xy', scale=1, color='r', label='a + b')
 
 
-    ax.set_xlim([-max(a[0], b[0], sum_vec[0], 5), max(a[0], b[0], sum_vec[0], 5)])
-    ax.set_ylim([-max(a[1], b[1], sum_vec[1], 5), max(a[1], b[1], sum_vec[1], 5)])
+    ax.set_xlim([min(a[0], b[0], sum_vec[0], -5), max(a[0], b[0], sum_vec[0], 5)])
+    ax.set_ylim([min(a[1], b[1], sum_vec[1], -5), max(a[1], b[1], sum_vec[1], 5)])
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_title('Sum of two vectors in 2D')
-    ax.legend(loc='best')
+    ax.legend(loc='best',borderpad=0.3)
     ax.grid(True)
     st.pyplot(fig,width=500)
 
-    st.text('NOTE: Vectors are frequently written in parentheses as pairs, such as [5 0] for a 2D vector or [1 2 3] for a 3D vector, which represent the vector\'s components along the x, y, and z axes')
+    st.text('NOTE: Vectors are frequently written in parentheses as pairs, such as [5 0] for a 2D vector or [1 2 3] for a 3D vector, which represent the vector\'s components along the x, y, and z axes.')
     #st.text(' While parentheses are common for this purpose, other notations like square brackets [x, y] or angle brackets ⟨x, y⟩ are also used, with the choice sometimes depending on the specific field or context of mathematics')
 
     st.write(f'**Vector a=** {a} ')
@@ -266,13 +269,13 @@ with tab4:
         ax.quiver(*origin, sum_vec[0], sum_vec[1], angles='xy', scale_units='xy', scale=1, color='r', label='a + b')
         ax.quiver(*origin, user_answer[0],user_answer[1], angles='xy', scale_units='xy', scale=1,color='m', label='Your Answer')
         
-        ax.set_xlim([-max(a[0], b[0], sum_vec[0], user_answer[0], 5), max(a[0], b[0], sum_vec[0], user_answer[0], 5)])
-        ax.set_ylim([-max(a[1], b[1], sum_vec[1], user_answer[1], 5), max(a[1], b[1], sum_vec[1], user_answer[1], 5)])
+        ax.set_xlim([min(a[0], b[0], sum_vec[0], user_answer[0], -5), max(a[0], b[0], sum_vec[0], user_answer[0], 5)])
+        ax.set_ylim([min(a[1], b[1], sum_vec[1], user_answer[1], -5), max(a[1], b[1], sum_vec[1], user_answer[1], 5)])
         
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
         ax.set_title('Sum of two vectors in 2D')
-        ax.legend(loc='best')
+        ax.legend(loc='best',borderpad=0.3)
         ax.grid(True)
         st.pyplot(fig,width=500)
 
@@ -310,8 +313,8 @@ with tab5:
     )
 
     if 'vecs_a' not in st.session_state or 'vecs_b' not in st.session_state:
-        st.session_state.vecs_a = np.random.randint(0, 5, size=2)
-        st.session_state.vecs_b = np.random.randint(0, 5, size=2)
+        st.session_state.vecs_a = np.random.randint(-5, 5, size=2)
+        st.session_state.vecs_b = np.random.randint(-5, 5, size=2)
 
     a = st.session_state.vecs_a
     b = st.session_state.vecs_b
@@ -325,12 +328,12 @@ with tab5:
     ax.quiver(*origin, b[0], b[1], angles='xy', scale_units='xy', scale=1, color='b', label='b')
     #ax.quiver(*origin, sub_vec[0], sub_vec[1], angles='xy', scale_units='xy', scale=1, color='r', label='a - b')
 
-    ax.set_xlim([-max(a[0], b[0], sub_vec[0], 5), max(a[0], b[0], sub_vec[0], 5)])
-    ax.set_ylim([-max(a[1], b[1], sub_vec[1], 5), max(a[1], b[1], sub_vec[1], 5)])
+    ax.set_xlim([min(a[0], b[0], sub_vec[0], -5), max(a[0], b[0], sub_vec[0], 5)])
+    ax.set_ylim([min(a[1], b[1], sub_vec[1], -5), max(a[1], b[1], sub_vec[1], 5)])
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_title('Subtraction of vectors in 2D')
-    ax.legend(loc='best')
+    ax.legend(loc='best',borderpad=0.3)
     ax.grid(True)
     st.pyplot(fig,width=500)
 
@@ -354,13 +357,13 @@ with tab5:
         ax.quiver(*origin, sub_vec[0], sub_vec[1], angles='xy', scale_units='xy', scale=1, color='r', label='a - b')
         ax.quiver(*origin, user_answer[0], user_answer[1], angles='xy', scale_units='xy', scale=1, color='m', label='Your Answer')
 
-        ax.set_xlim([-max(a[0], b[0], sub_vec[0], user_answer[0], 5), max(a[0], b[0], sub_vec[0], user_answer[0], 5)])
-        ax.set_ylim([-max(a[1], b[1], sub_vec[1], user_answer[1], 5), max(a[1], b[1], sub_vec[1], user_answer[1], 5)])
+        ax.set_xlim([min(a[0], b[0], sub_vec[0], user_answer[0], -5), max(a[0], b[0], sub_vec[0], user_answer[0], 5)])
+        ax.set_ylim([min(a[1], b[1], sub_vec[1], user_answer[1], -5), max(a[1], b[1], sub_vec[1], user_answer[1], 5)])
 
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
         ax.set_title('Subtraction of two vectors in 2D')
-        ax.legend(loc='best')
+        ax.legend(loc='best',borderpad=0.3)
         ax.grid(True)
         st.pyplot(fig,width=500)
 
@@ -397,9 +400,9 @@ with tab6:
         )
 
     if 'vec3_a' not in st.session_state or 'vec3_b' not in st.session_state or 'vec3_c' not in st.session_state:
-        st.session_state.vec3_a = np.random.randint(0, 5, size=2)
-        st.session_state.vec3_b = np.random.randint(0, 5, size=2)
-        st.session_state.vec3_c = np.random.randint(0, 5, size=2)
+        st.session_state.vec3_a = np.random.randint(-5, 5, size=2)
+        st.session_state.vec3_b = np.random.randint(-5, 5, size=2)
+        st.session_state.vec3_c = np.random.randint(-5, 5, size=2)
 
     a = st.session_state.vec3_a
     b = st.session_state.vec3_b
@@ -415,12 +418,12 @@ with tab6:
     ax.quiver(*origin, c[0], c[1], angles='xy', scale_units='xy', scale=1, color='orange', label='c')
     #ax.quiver(*origin, sum_vec[0], sum_vec[1], angles='xy', scale_units='xy', scale=1, color='r', label='a - b + c')
 
-    ax.set_xlim([-max(a[0], b[0], c[0], sum_vec[0], 5), max(a[0], b[0], c[0], sum_vec[0], 5)])
-    ax.set_ylim([-max(a[1], b[1], c[1], sum_vec[1], 5), max(a[1], b[1], c[1], sum_vec[1], 5)])
+    ax.set_xlim([min(a[0], b[0], c[0], sum_vec[0], -5), max(a[0], b[0], c[0], sum_vec[0], 5)])
+    ax.set_ylim([min(a[1], b[1], c[1], sum_vec[1], -5), max(a[1], b[1], c[1], sum_vec[1], 5)])
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_title('Sum and subtraction of three vectors in 2D')
-    ax.legend(loc='best')
+    ax.legend(loc='best',borderpad=0.3)
     ax.grid(True)
     st.pyplot(fig,width=500)
 
@@ -444,13 +447,13 @@ with tab6:
         ax.quiver(*origin, sum_vec[0], sum_vec[1], angles='xy', scale_units='xy', scale=1, color='r', label='a - b + c')
         ax.quiver(*origin, user_answer[0], user_answer[1], angles='xy', scale_units='xy', scale=1, color='m', label='Your Answer')
 
-        ax.set_xlim([-max(a[0], b[0], c[0], sum_vec[0], user_answer[0], 5), max(a[0], b[0], c[0], sum_vec[0], user_answer[0], 5)])
-        ax.set_ylim([-max(a[1], b[1], c[1], sum_vec[1], user_answer[1], 5), max(a[1], b[1], c[1], sum_vec[1], user_answer[1], 5)])
+        ax.set_xlim([min(a[0], b[0], c[0], sum_vec[0], user_answer[0], -5), max(a[0], b[0], c[0], sum_vec[0], user_answer[0], 5)])
+        ax.set_ylim([min(a[1], b[1], c[1], sum_vec[1], user_answer[1], -5), max(a[1], b[1], c[1], sum_vec[1], user_answer[1], 5)])
         
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
         ax.set_title('Sum and subtraction of three vectors in 2D')
-        ax.legend(loc='best')
+        ax.legend(loc='best',borderpad=0.3)
         ax.grid(True)
         st.pyplot(fig,width=500)
 
@@ -609,7 +612,7 @@ with tab7:
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
     ax.set_title('Components of a Vector in 3D')
-    ax.legend(loc='best')
+    ax.legend(loc='best',borderpad=0.3)
 
     #print mag and theta on plot
     ax.text(0, 0, 2, r'$\theta$', color='blue', fontsize=10) #ha='center', va='center', alpha=0.7
@@ -645,7 +648,7 @@ with tab7:
         origin = [0, 0, 0]
 
         ax.quiver(*origin, *a, color='r', label='given vector', arrow_length_ratio=0.1)
-        ax.quiver(*origin, *user_answer, color='m', label='Your Answer')
+        ax.quiver(*origin, *user_answer, color='m', label='Your Answer',arrow_length_ratio=0.1)
 
         #projection of given vector
         ax.plot(xs=[0, a[0]], ys=[0, a[1]], zs=[0, 0],linestyle='--', color='gray')  # projection on xy-plane
@@ -662,7 +665,7 @@ with tab7:
         ax.set_ylabel('Z')
         
         ax.set_title('Components of a Vector in 3D')
-        ax.legend(loc='best')
+        ax.legend(loc='best',borderpad=0.3)
       
         #print mag and theta on plot
         ax.text(0, 0, 2, r'$\theta$', color='blue', fontsize=10) #ha='center', va='center', alpha=0.7
@@ -718,18 +721,18 @@ with tab8:
     origin = [0, 0, 0]
 
     
-    ax.quiver(*origin, *a, color='g', label='a')
-    ax.quiver(*origin, *b, color='b', label='b')
+    ax.quiver(*origin, *a, color='g', label='a',arrow_length_ratio=0.1)
+    ax.quiver(*origin, *b, color='b', label='b',arrow_length_ratio=0.1)
     #ax.quiver(*origin, *sum_vec, color='r', label='a + b')
 
-    ax.set_xlim([min(0, sum_vec[0]), max(a[0], b[0], sum_vec[0], 6)])
-    ax.set_ylim([min(0, sum_vec[1]), max(a[1], b[1], sum_vec[1], 6)])
-    ax.set_zlim([min(0, sum_vec[2]), max(a[2], b[2], sum_vec[2], 6)])
+    ax.set_xlim([0, max(a[0], b[0], sum_vec[0], 5)])
+    ax.set_ylim([0, max(a[1], b[1], sum_vec[1], 5)])
+    ax.set_zlim([0, max(a[2], b[2], sum_vec[2], 5)])
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
     ax.set_title('Sum of Vectors in 3D')
-    ax.legend(loc='best')
+    ax.legend(loc='best',borderpad=0.3)
     ax.set_box_aspect(aspect=None, zoom=0.8)
     ax.grid(True)
     st.pyplot(fig,width=500)
@@ -750,21 +753,21 @@ with tab8:
         
         origin = [0, 0, 0]
 
-        ax.quiver(*origin, *a, color='g', label='a')
-        ax.quiver(*origin, *b, color='b', label='b')
-        ax.quiver(*origin, *sum_vec, color='r', label='a + b')
-        ax.quiver(*origin, *user_answer, color='m', label='Your Answer')
+        ax.quiver(*origin, *a, color='g', label='a',arrow_length_ratio=0.1)
+        ax.quiver(*origin, *b, color='b', label='b',arrow_length_ratio=0.1)
+        ax.quiver(*origin, *sum_vec, color='r', label='a + b',arrow_length_ratio=0.1)
+        ax.quiver(*origin, *user_answer, color='m', label='Your Answer',arrow_length_ratio=0.1)
 
-        ax.set_xlim([min(0, sum_vec[0]), max(a[0], b[0], sum_vec[0], 6)])
-        ax.set_ylim([min(0, sum_vec[1]), max(a[1], b[1], sum_vec[1], 6)])
-        ax.set_zlim([min(0, sum_vec[2]), max(a[2], b[2], sum_vec[2], 6)])
+        ax.set_xlim([min(0, user_answer[0]), max(a[0], b[0], sum_vec[0], user_answer[0], 5)])
+        ax.set_ylim([min(0, user_answer[1]), max(a[1], b[1], sum_vec[1], user_answer[1], 5)])
+        ax.set_zlim([min(0, user_answer[2]), max(a[2], b[2], sum_vec[2], user_answer[2], 5)])
 
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
         ax.set_zlabel('Z')
     
         ax.set_title('Sum of Vectors 3D')
-        ax.legend(loc='best')
+        ax.legend(loc='best',borderpad=0.3)
     
         ax.set_box_aspect(aspect=None, zoom=0.8)
         ax.grid(True)
@@ -813,18 +816,18 @@ with tab9:
     ax = fig.add_subplot(111, projection='3d')
     origin = [0, 0, 0]
 
-    ax.quiver(*origin, *a, color='g', label='a')
-    ax.quiver(*origin, *b, color='b', label='b')
+    ax.quiver(*origin, *a, color='g', label='a',arrow_length_ratio=0.1)
+    ax.quiver(*origin, *b, color='b', label='b',arrow_length_ratio=0.1)
     #ax.quiver(*origin, *subtraction_vec, color='r', label='a - b')
 
-    ax.set_xlim([min(0, sum_vec[0]), max(a[0], b[0], sum_vec[0], 5)])
-    ax.set_ylim([min(0, sum_vec[1]), max(a[1], b[1], sum_vec[1], 5)])
-    ax.set_zlim([min(0, sum_vec[2]), max(a[2], b[2], sum_vec[2], 5)])
+    ax.set_xlim([0, max(a[0], b[0], 5)])
+    ax.set_ylim([0, max(a[1], b[1], 5)])
+    ax.set_zlim([0, max(a[2], b[2], 5)])
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
     ax.set_title('Subtraction of Vectors in 3D')
-    ax.legend(loc='best')
+    ax.legend(loc='best',borderpad=0.3)
     ax.set_box_aspect(aspect=None, zoom=0.8)
     ax.grid(True)
     #ax.view_init(elev=20., azim=30)  # Set a good view angle
@@ -845,21 +848,21 @@ with tab9:
         ax = fig.add_subplot(111, projection='3d')
         origin = [0, 0, 0]
 
-        ax.quiver(*origin, *a, color='g', label='a')
-        ax.quiver(*origin, *b, color='b', label='b')
-        ax.quiver(*origin, *subtraction_vec, color='r', label='a - b')
-        ax.quiver(*origin, *user_answer, color='m', label='Your Answer')
+        ax.quiver(*origin, *a, color='g', label='a',arrow_length_ratio=0.1)
+        ax.quiver(*origin, *b, color='b', label='b',arrow_length_ratio=0.1)
+        ax.quiver(*origin, *subtraction_vec, color='r', label='a - b',arrow_length_ratio=0.1)
+        ax.quiver(*origin, *user_answer, color='m', label='Your Answer',arrow_length_ratio=0.1)
 
-        ax.set_xlim([min(0, sum_vec[0]), max(a[0], b[0], sum_vec[0], 5)])
-        ax.set_ylim([min(0, sum_vec[1]), max(a[1], b[1], sum_vec[1], 5)])
-        ax.set_zlim([min(0, sum_vec[2]), max(a[2], b[2], sum_vec[2], 5)])
+        ax.set_xlim([min(0, subtraction_vec[0],user_answer[0]), max(a[0], b[0], subtraction_vec[0], user_answer[0], 5)])
+        ax.set_ylim([min(0, subtraction_vec[1],user_answer[1]), max(a[1], b[1], subtraction_vec[1], user_answer[1], 5)])
+        ax.set_zlim([min(0, subtraction_vec[2],user_answer[2]), max(a[2], b[2], subtraction_vec[2], user_answer[2], 5)])
 
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
         ax.set_zlabel('Z')
         ax.set_title('Subtraction of Vectors')
 
-        ax.legend(loc='best')
+        ax.legend(loc='best',borderpad=0.3)
         ax.set_box_aspect(aspect=None, zoom=0.8)
         ax.grid(True)
         st.pyplot(fig,width=500)
